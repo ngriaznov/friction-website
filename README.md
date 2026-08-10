@@ -21,7 +21,25 @@ npm run build
 
 Output goes to `dist/`.
 
-## Cloudflare Pages
+## Deployment (Cloudflare Workers, from CI)
 
-- Build command: `npm run fetch-wasm && npm run build`
-- Build output directory: `dist`
+Every push to `main` runs `.github/workflows/deploy.yml`: install, stage
+the wasm wrapper from the friction release, build, then
+`wrangler deploy` — an assets-only Worker serving `dist/` (config in
+`wrangler.jsonc`). Without the Cloudflare secrets the workflow still
+builds and reports green; it just skips the deploy step.
+
+One-time setup:
+
+1. In the Cloudflare dashboard, create an API token with the
+   **Edit Cloudflare Workers** template.
+2. Add two repository secrets on GitHub: `CLOUDFLARE_API_TOKEN` and
+   `CLOUDFLARE_ACCOUNT_ID` (the account ID is on the dashboard's
+   Workers overview page).
+3. The first deploy lands on the `workers.dev` subdomain only. When it
+   looks right, uncomment the `routes` line in `wrangler.jsonc` to
+   attach `friction-cli.dev` — DNS is managed automatically as long as
+   the zone is in the same account.
+
+Manual deploy from a machine with `wrangler login`: `npm run fetch-wasm
+&& npm run build && npx wrangler deploy`.

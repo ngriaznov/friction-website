@@ -1,0 +1,22 @@
+// Cloudflare Workers static-assets deployment (assets-only, no Worker
+// script): `wrangler deploy` uploads dist/ and serves it from the edge.
+// CI runs this on every push to main (.github/workflows/deploy.yml).
+{
+	"name": "friction-website",
+	"compatibility_date": "2026-08-10",
+	"assets": {
+		"directory": "./dist",
+		// "none" (the default, pinned here on purpose): a missing path is a
+		// real 404. The friction loader probes ./packs/ with a HEAD request
+		// to decide between locally staged models and the GitHub release
+		// tag — an SPA-style index.html fallback would answer that probe
+		// with 200 and the engine would try to parse HTML as model weights.
+		"not_found_handling": "none"
+	}
+
+	// Once the first deploy looks right on the workers.dev URL, point the
+	// real domain at it by uncommenting this (the friction-cli.dev zone
+	// must be in the same Cloudflare account; DNS is managed
+	// automatically). Until then, deploys never touch the live site.
+	// ,"routes": [{ "pattern": "friction-cli.dev", "custom_domain": true }]
+}
