@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useFriction } from "./useFriction";
 import type { FrictionFixResult } from "./friction";
 import { SAMPLE_INPUT, SAMPLE_OUTPUT, SAMPLE_PASS_COUNT, SAMPLE_PATCH_COUNT, SAMPLE_TALLY_LINES } from "./sample";
-import { countWords, formatMB, pluralize, tallyFromFired } from "./utils";
+import { countWords, diffWords, formatMB, pluralize, tallyFromFired } from "./utils";
 
 const DEBOUNCE_MS = 400;
 
@@ -38,7 +38,10 @@ export function ParagraphDemo() {
   const [text, setText] = useState(SAMPLE_INPUT);
   const [result, setResult] = useState<FrictionFixResult | null>(null);
   const [fixError, setFixError] = useState<string | null>(null);
-  const [showDiff, setShowDiff] = useState(false);
+  // The output panel defaults to the redline (deleted words struck in the
+  // lighter ink, substitutions on yellow — the same visual language the
+  // static sample used); the toggle switches to the clean fixed text.
+  const [view, setView] = useState<"changes" | "clean">("changes");
   const firstRunRef = useRef(true);
 
   useEffect(() => {
@@ -65,7 +68,6 @@ export function ParagraphDemo() {
     return () => window.clearTimeout(id);
   }, [status, engine, text]);
 
-  const hasResult = result !== null;
   const inputWords = countWords(text);
   const outputText = result ? result.output : SAMPLE_OUTPUT;
   const outputWords = countWords(outputText);
@@ -73,7 +75,13 @@ export function ParagraphDemo() {
   const passCount = tally ? tally.passCount : SAMPLE_PASS_COUNT;
   const patchCount = tally ? tally.patchCount : SAMPLE_PATCH_COUNT;
   const tallyLines = tally ? tally.lines : SAMPLE_TALLY_LINES;
-  const diffActive = showDiff && hasResult;
+
+  // The redline needs no engine: before the wasm is ready it diffs the
+  // static sample pair, so the section shows the same view either way.
+  const redline = useMemo(
+    () => diffWords(result ? result.input : SAMPLE_INPUT, outputText),
+    [result, outputText],
+  );
 
   let statusLine: string | null = null;
   if (status === "loading") {
@@ -127,52 +135,47 @@ export function ParagraphDemo() {
             </div>
             <button
               type="button"
-              onClick={() => setShowDiff((prev) => !prev)}
-              disabled={!hasResult}
-              title={hasResult ? "Toggle the line diff" : "Available once the engine is ready"}
+              onClick={() => setView((prev) => (prev === "changes" ? "clean" : "changes"))}
+              title={view === "changes" ? "Show the clean fixed text" : "Show what changed"}
               style={{
                 fontFamily: mono,
                 fontSize: 11,
                 letterSpacing: "0.04em",
                 textTransform: "uppercase",
-                background: diffActive ? "#FFD400" : "#1A1A1A",
-                color: diffActive ? "#1A1A1A" : "#FAF8F3",
+                background: view === "changes" ? "#FFD400" : "#1A1A1A",
+                color: view === "changes" ? "#1A1A1A" : "#FAF8F3",
                 border: "none",
                 borderRadius: 999,
                 padding: "6px 12px",
-                cursor: hasResult ? "pointer" : "not-allowed",
-                opacity: hasResult ? 1 : 0.45,
+                cursor: "pointer",
                 marginBottom: 18,
                 whiteSpace: "nowrap",
               }}
             >
-              diff
+              {view === "changes" ? "changes" : "clean"}
             </button>
           </div>
 
-          {showDiff && result ? (
-            <div style={{ ...codeStyle, color: "#1A1A1A" }}>
-              {result.diff.map((op, index) => {
-                if (op.type === "equal") {
-                  return <div key={index}>{op.line || " "}</div>;
-                }
+          {view === "changes" ? (
+            <code style={{ ...codeStyle, color: "#1A1A1A" }}>
+              {redline.map((op, index) => {
                 if (op.type === "del") {
                   return (
-                    <div key={index} style={{ textDecoration: "line-through", color: "#8A8478" }}>
-                      {op.line || " "}
-                    </div>
+                    <span key={index} style={{ textDecoration: "line-through", color: "#8A8478" }}>
+                      {op.text}
+                    </span>
                   );
                 }
-                return (
-                  <div
-                    key={index}
-                    style={{ background: "#FFD400", color: "#1A1A1A", padding: "0 4px", borderRadius: 3, display: "inline-block" }}
-                  >
-                    {op.line || " "}
-                  </div>
-                );
+                if (op.type === "add") {
+                  return (
+                    <span key={index} style={{ background: "#FFD400", color: "#1A1A1A" }}>
+                      {op.text}
+                    </span>
+                  );
+                }
+                return <span key={index}>{op.text}</span>;
               })}
-            </div>
+            </code>
           ) : (
             <code style={{ ...codeStyle, color: "#1A1A1A" }}>{outputText}</code>
           )}

@@ -24,7 +24,8 @@ export default function Demo() {
               maxWidth: "14em",
             }}
           >
-            One paragraph, run through the engine
+            One paragraph, run through the engine{" "}
+            <span style={{ color: "#FFD400", fontWeight: 500, whiteSpace: "nowrap" }}>(try it here)</span>
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.6, fontWeight: 300, color: "#A9A498", margin: 0, maxWidth: "30em" }}>
             friction edits bytes and leaves the input's own wrapping alone rather than reflowing paragraphs it touched. Struck text is deleted; text on yellow is substituted or pivoted.
