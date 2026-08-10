@@ -2,7 +2,11 @@
 // script): `wrangler deploy` uploads dist/ and serves it from the edge.
 // CI runs this on every push to main (.github/workflows/deploy.yml).
 {
-	"name": "friction-website",
+	// The existing Worker serving friction-cli.dev: deploying under this
+	// name updates it in place, and its attached custom domain stays
+	// attached — so a deploy with the CI secrets set goes live on the
+	// real domain immediately.
+	"name": "friction-cli",
 	"compatibility_date": "2026-08-10",
 	"assets": {
 		"directory": "./dist",
@@ -14,9 +18,8 @@
 		"not_found_handling": "none"
 	}
 
-	// Once the first deploy looks right on the workers.dev URL, point the
-	// real domain at it by uncommenting this (the friction-cli.dev zone
-	// must be in the same Cloudflare account; DNS is managed
-	// automatically). Until then, deploys never touch the live site.
-	// ,"routes": [{ "pattern": "friction-cli.dev", "custom_domain": true }]
+	// No routes block: friction-cli.dev is already attached to this
+	// Worker as a custom domain in the dashboard, and that attachment
+	// survives deploys. Add one only if the domain ever detaches:
+	// "routes": [{ "pattern": "friction-cli.dev", "custom_domain": true }]
 }

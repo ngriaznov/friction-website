@@ -36,10 +36,10 @@ One-time setup:
 2. Add two repository secrets on GitHub: `CLOUDFLARE_API_TOKEN` and
    `CLOUDFLARE_ACCOUNT_ID` (the account ID is on the dashboard's
    Workers overview page).
-3. The first deploy lands on the `workers.dev` subdomain only. When it
-   looks right, uncomment the `routes` line in `wrangler.jsonc` to
-   attach `friction-cli.dev` — DNS is managed automatically as long as
-   the zone is in the same account.
+3. The deploy targets the existing `friction-cli` Worker — the one
+   `friction-cli.dev` is attached to — so a push with the secrets set
+   replaces the live site directly. The custom-domain attachment
+   survives deploys; nothing else to flip.
 
 Manual deploy from a machine with `wrangler login`: `npm run fetch-wasm
 && npm run build && npx wrangler deploy`.
