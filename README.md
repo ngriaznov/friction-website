@@ -21,25 +21,19 @@ npm run build
 
 Output goes to `dist/`.
 
-## Deployment (Cloudflare Workers, from CI)
+## Deployment (Cloudflare Workers Builds)
 
-Every push to `main` runs `.github/workflows/deploy.yml`: install, stage
-the wasm wrapper from the friction release, build, then
-`wrangler deploy` — an assets-only Worker serving `dist/` (config in
-`wrangler.jsonc`). Without the Cloudflare secrets the workflow still
-builds and reports green; it just skips the deploy step.
+The repo is connected to Cloudflare's Git integration, which builds and
+deploys on every push to `main`. `wrangler.jsonc` defines an assets-only
+Worker named `friction-cli` — the existing Worker `friction-cli.dev` is
+attached to — serving `dist/`. Settings on the Cloudflare side:
 
-One-time setup:
+- Build command: `npm run fetch-wasm && npm run build`
+- Deploy command: `npx wrangler deploy`
 
-1. In the Cloudflare dashboard, create an API token with the
-   **Edit Cloudflare Workers** template.
-2. Add two repository secrets on GitHub: `CLOUDFLARE_API_TOKEN` and
-   `CLOUDFLARE_ACCOUNT_ID` (the account ID is on the dashboard's
-   Workers overview page).
-3. The deploy targets the existing `friction-cli` Worker — the one
-   `friction-cli.dev` is attached to — so a push with the secrets set
-   replaces the live site directly. The custom-domain attachment
-   survives deploys; nothing else to flip.
+`fetch-wasm` must run before the build: it stages the wasm wrapper from
+the friction GitHub release into `public/`, and without it the site
+ships with no engine.
 
 Manual deploy from a machine with `wrangler login`: `npm run fetch-wasm
 && npm run build && npx wrangler deploy`.

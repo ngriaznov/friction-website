@@ -3,3 +3,6 @@ dist
 public/loader.js
 public/pkg/
 *.tsbuildinfo
+
+# Wrangler local state (dry-runs, dev)
+.wrangler/
