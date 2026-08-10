@@ -1,0 +1,5 @@
+node_modules
+dist
+public/loader.js
+public/pkg/
+*.tsbuildinfo

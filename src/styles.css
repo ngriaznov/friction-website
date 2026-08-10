@@ -1,0 +1,87 @@
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+body {
+  margin: 0;
+  background: #FAF8F3;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: #1A1A1A;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #8A7200;
+}
+
+::selection {
+  background: #FFD400;
+  color: #1A1A1A;
+}
+
+/* Content is visible by default. Only a browser that has run the reveal
+   effect (see src/hooks/useReveal.ts) and supports IntersectionObserver
+   ever hides anything, so crawlers and text-only agents always receive
+   the fully rendered page. */
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.js-reveal [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1);
+}
+
+.js-reveal [data-reveal="1"].is-in { transition-delay: .1s; }
+.js-reveal [data-reveal="2"].is-in { transition-delay: .2s; }
+.js-reveal [data-reveal="3"].is-in { transition-delay: .3s; }
+
+/* cascade: the observed parent stays visible; its direct children stagger in */
+.js-reveal [data-cascade] {
+  opacity: 1;
+  transform: none;
+}
+
+.js-reveal [data-cascade] > * {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.js-reveal [data-cascade].is-in > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1);
+}
+
+.js-reveal [data-cascade].is-in > *:nth-child(2) { transition-delay: .09s; }
+.js-reveal [data-cascade].is-in > *:nth-child(3) { transition-delay: .18s; }
+.js-reveal [data-cascade].is-in > *:nth-child(4) { transition-delay: .27s; }
+.js-reveal [data-cascade].is-in > *:nth-child(5) { transition-delay: .36s; }
+.js-reveal [data-cascade].is-in > *:nth-child(6) { transition-delay: .45s; }
+.js-reveal [data-cascade].is-in > *:nth-child(n+7) { transition-delay: .54s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal [data-reveal], .js-reveal [data-cascade] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@media print {
+  .js-reveal [data-reveal], .js-reveal [data-cascade] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+[data-h="h1"]:hover { color: #1A1A1A !important; }
+[data-h="h2"]:hover { background: #000 !important; color: #FFD400 !important; }
+[data-h="h3"]:hover { border-color: #FFD400 !important; }
+[data-h="h4"]:hover { color: #FFD400 !important; }
