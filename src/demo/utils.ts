@@ -32,6 +32,17 @@ export function tallyFromFired(fired: ReadonlyArray<FrictionFiredRule>): Tally {
   return { passCount, patchCount, lines };
 }
 
+/**
+ * Slices `text` by BYTE offsets (the coordinate system of check's span
+ * rows) — string indexing would drift on any multi-byte character.
+ */
+export function byteExcerpt(text: string, start: number, end: number, maxChars = 80): string {
+  const bytes = new TextEncoder().encode(text);
+  const slice = bytes.subarray(Math.max(0, start), Math.min(bytes.length, end));
+  const decoded = new TextDecoder("utf-8", { fatal: false }).decode(slice);
+  return decoded.length > maxChars ? `${decoded.slice(0, maxChars)}…` : decoded;
+}
+
 export interface WordDiffOp {
   type: "equal" | "del" | "add";
   text: string;

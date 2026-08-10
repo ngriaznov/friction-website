@@ -35,10 +35,35 @@ export interface FrictionFixResult {
   fired: FrictionFiredRule[];
 }
 
+/**
+ * One detected span from `engine.check()`. `start`/`end` are BYTE offsets
+ * into the checked text (slice via TextEncoder, not string indexing —
+ * multi-byte characters shift the two apart).
+ */
+export interface FrictionCheckSpan {
+  channel: string;
+  frame_id: string;
+  start: number;
+  end: number;
+  line: number;
+  column: number;
+  score: number | null;
+  message?: string;
+}
+
+/**
+ * The subset of `friction check --format json` this site reads; the real
+ * report carries more (metrics, tell_counts, dms).
+ */
+export interface FrictionCheckReport {
+  genre: string;
+  spans: FrictionCheckSpan[];
+}
+
 export interface FrictionEngine {
   fix(input: string): FrictionFixResult;
-  /** `friction check --format json`, parsed. Shape not pinned here. */
-  check(input: string): unknown;
+  /** `friction check --format json`, parsed. */
+  check(input: string): FrictionCheckReport;
   /** `friction explain --format json`, parsed. Shape not pinned here. */
   explain(input: string): unknown;
   fixText(input: string): string;

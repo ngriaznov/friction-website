@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useFriction } from "./useFriction";
-import type { FrictionFixResult } from "./friction";
+import type { FrictionCheckSpan, FrictionFixResult } from "./friction";
 import { SAMPLE_INPUT, SAMPLE_OUTPUT, SAMPLE_PASS_COUNT, SAMPLE_PATCH_COUNT, SAMPLE_TALLY_LINES } from "./sample";
-import { countWords, diffWords, formatMB, pluralize, tallyFromFired } from "./utils";
+import { byteExcerpt, countWords, diffWords, formatMB, pluralize, tallyFromFired } from "./utils";
 
 const DEBOUNCE_MS = 400;
 
@@ -37,6 +37,7 @@ export function ParagraphDemo() {
 
   const [text, setText] = useState(SAMPLE_INPUT);
   const [result, setResult] = useState<FrictionFixResult | null>(null);
+  const [findings, setFindings] = useState<FrictionCheckSpan[]>([]);
   const [fixError, setFixError] = useState<string | null>(null);
   // The output panel defaults to the redline (deleted words struck in the
   // lighter ink, substitutions on yellow — the same visual language the
@@ -49,7 +50,14 @@ export function ParagraphDemo() {
 
     const runFix = () => {
       try {
-        setResult(engine.fix(text));
+        const fixed = engine.fix(text);
+        // Fix only edits what a gate licenses; what it detected but left
+        // alone (unattested compounds, paraphrase spans) is invisible in
+        // the output text. Run check over the OUTPUT so those findings —
+        // the "suggest" half of the CLI — get their own rows below.
+        const residual = engine.check(fixed.output).spans;
+        setResult(fixed);
+        setFindings(residual);
         setFixError(null);
       } catch (err) {
         // Keep the last good `result` on screen; only surface the failure
@@ -200,6 +208,16 @@ export function ParagraphDemo() {
           ? "friction fix: no patches applied — clean"
           : `friction fix: ${passCount} pass(es), ${patchCount} patch(es) applied\n` +
             tallyLines.map((line) => `  ${line.rule}: ${line.count}`).join("\n")}
+        {result && `\n  suggest: ${findings.length} finding(s) remain`}
+        {findings.map((span) => (
+          <div key={`${span.frame_id}-${span.start}`} style={{ paddingLeft: 16 }}>
+            <span style={{ color: "#FFD400" }}>! </span>
+            <span style={{ color: "#FAF8F3" }}>"{byteExcerpt(outputText, span.start, span.end)}"</span>
+            {" — "}
+            {span.frame_id}
+            {span.message ? ` — ${span.message}` : ""}
+          </div>
+        ))}
       </pre>
     </div>
   );
