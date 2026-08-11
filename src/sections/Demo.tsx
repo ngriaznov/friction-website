@@ -28,7 +28,10 @@ export default function Demo() {
             <span style={{ color: "#FFD400", fontWeight: 500, whiteSpace: "nowrap" }}>(try it here)</span>
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.6, fontWeight: 300, color: "#A9A498", margin: 0, maxWidth: "30em" }}>
-            friction edits bytes and leaves the input's own wrapping alone rather than reflowing paragraphs it touched. Struck text is deleted; text on yellow is substituted or pivoted.
+            friction edits bytes and leaves the input's own wrapping alone rather than reflowing paragraphs it touched. Struck text is deleted; text on yellow is substituted or pivoted.{" "}
+            <span style={{ color: "#C9C4B8" }}>
+              This is the real friction engine compiled to WebAssembly, running in your browser — every edit happens on your machine.
+            </span>
           </p>
         </div>
 
