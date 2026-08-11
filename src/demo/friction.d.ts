@@ -56,7 +56,6 @@ export interface FrictionCheckSpan {
  * report carries more (metrics, tell_counts, dms).
  */
 export interface FrictionCheckReport {
-  genre: string;
   spans: FrictionCheckSpan[];
 }
 
