@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useFriction } from "./useFriction";
 import type { FrictionCheckSpan, FrictionFixResult } from "./friction";
 import { SAMPLE_INPUT, SAMPLE_OUTPUT, SAMPLE_PASS_COUNT, SAMPLE_PATCH_COUNT, SAMPLE_TALLY_LINES } from "./sample";
@@ -44,6 +44,37 @@ export function ParagraphDemo() {
   // static sample used); the toggle switches to the clean fixed text.
   const [view, setView] = useState<"changes" | "clean">("changes");
   const firstRunRef = useRef(true);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
+
+  // The input box shows the whole paragraph rather than a fixed row count:
+  // a short column re-wraps the same text onto more lines, so a static
+  // `rows` clips it. Measure the content after every edit, and again when
+  // the column width or the loaded font changes the wrapping.
+  useLayoutEffect(() => {
+    const el = inputRef.current;
+    if (!el) return;
+
+    const grow = () => {
+      el.style.height = "auto";
+      el.style.height = `${el.scrollHeight}px`;
+    };
+
+    grow();
+
+    // Width-only guard: the observer also fires on the height we just set,
+    // which would feed itself.
+    let lastWidth = el.clientWidth;
+    const observer = new ResizeObserver(() => {
+      if (el.clientWidth === lastWidth) return;
+      lastWidth = el.clientWidth;
+      grow();
+    });
+    observer.observe(el);
+
+    document.fonts?.ready.then(grow).catch(() => {});
+
+    return () => observer.disconnect();
+  }, [text]);
 
   useEffect(() => {
     if (status !== "ready" || !engine) return;
@@ -119,14 +150,16 @@ export function ParagraphDemo() {
             Input — machine draft, {inputWords} {pluralize(inputWords, "word", "words")}
           </div>
           <textarea
+            ref={inputRef}
             value={text}
             onChange={(event) => setText(event.target.value)}
             spellCheck={false}
-            rows={9}
+            rows={1}
             style={{
               ...codeStyle,
               width: "100%",
-              resize: "vertical",
+              resize: "none",
+              overflow: "hidden",
               background: "transparent",
               border: "none",
               outline: "none",
