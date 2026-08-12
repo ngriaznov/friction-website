@@ -24,14 +24,6 @@ export default function Footer() {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
               <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "#7A756B", marginBottom: 2 }}>
-                Data
-              </div>
-              <a href="https://github.com/ngriaznov/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">inventory-v1.toml</a>
-              <a href="https://github.com/ngriaznov/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">register-v1.toml</a>
-              <a href="https://github.com/ngriaznov/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">attestation-v1.toml</a>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "#7A756B", marginBottom: 2 }}>
                 Project
               </div>
               <a href="https://github.com/ngriaznov/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">GitHub</a>
