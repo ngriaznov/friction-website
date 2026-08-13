@@ -109,8 +109,11 @@ a:hover {
 
 @media (min-width: 900px) {
   .hero-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(36px, 5vw, 64px);
+    /* The demo column takes the larger share: every pixel of width there
+       is a line the paragraph does not wrap onto, which is what keeps the
+       panel inside the first screen. */
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+    gap: clamp(32px, 4vw, 56px);
   }
   .hero-left {
     display: block;

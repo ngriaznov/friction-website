@@ -2,7 +2,9 @@ import { ParagraphDemo } from "../demo/ParagraphDemo";
 
 export default function Hero() {
   return (
-    <section style={{ padding: "clamp(48px, 8vw, 96px) clamp(18px, 4vw, 40px) 0", maxWidth: 1240, margin: "0 auto" }}>
+    // Top padding tracks viewport height, not width: it is the first thing
+    // competing with the demo panel for room on a short screen.
+    <section style={{ padding: "clamp(28px, 5vh, 72px) clamp(18px, 4vw, 40px) 0", maxWidth: 1240, margin: "0 auto" }}>
       <div className="hero-grid">
         <div className="hero-left">
           <div className="hero-pitch">
@@ -11,7 +13,7 @@ export default function Hero() {
               style={{
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: 700,
-                fontSize: "clamp(29px, 4.4vw, 68px)",
+                fontSize: "clamp(29px, 4.2vw, 62px)",
                 lineHeight: 0.98,
                 overflowWrap: "break-word",
                 letterSpacing: "-0.035em",
@@ -98,32 +100,24 @@ export default function Hero() {
             boxShadow: "0 24px 60px rgba(26,26,26,0.18)",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "2px 4px 16px" }}>
-            <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#4A473F" }} />
-            <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#4A473F" }} />
-            <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#FFD400" }} />
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "#7A756B", marginLeft: 8 }}>
-              friction fix draft.md
-            </span>
-          </div>
           <h2
             style={{
               fontFamily: "Poppins, sans-serif",
               fontWeight: 600,
-              fontSize: "clamp(19px, 2vw, 23px)",
+              fontSize: "clamp(17px, 1.6vw, 20px)",
               lineHeight: 1.15,
               letterSpacing: "-0.02em",
               color: "#FAF8F3",
-              margin: "0 0 10px",
+              margin: "0 0 6px",
               padding: "0 4px",
             }}
           >
             One paragraph, run through the engine{" "}
             <span style={{ color: "#FFD400", fontWeight: 500, whiteSpace: "nowrap" }}>(try it here)</span>
           </h2>
-          <p style={{ fontSize: 13.5, lineHeight: 1.55, fontWeight: 300, color: "#A9A498", margin: "0 0 18px", padding: "0 4px" }}>
-            Edit the draft and watch it re-run. Struck text is deleted, text on yellow is substituted or pivoted.{" "}
-            <span style={{ color: "#C9C4B8" }}>This is the real engine compiled to WebAssembly — every edit happens on your machine.</span>
+          <p style={{ fontSize: 12.5, lineHeight: 1.5, fontWeight: 300, color: "#A9A498", margin: "0 0 12px", padding: "0 4px" }}>
+            Struck text is deleted, yellow is substituted.{" "}
+            <span style={{ color: "#C9C4B8" }}>The real engine, in WebAssembly, on your machine.</span>
           </p>
           <ParagraphDemo />
         </div>

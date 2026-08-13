@@ -10,27 +10,34 @@ const mono = "'IBM Plex Mono', monospace";
 
 const panelLabelStyle: CSSProperties = {
   fontFamily: mono,
-  fontSize: 11,
+  fontSize: 10.5,
   letterSpacing: "0.08em",
   textTransform: "uppercase",
-  marginBottom: 18,
+  marginBottom: 11,
 };
 
+// Sized so the whole demo — both panels and the tally — fits the hero
+// panel without running past the first screen.
 const codeStyle: CSSProperties = {
   display: "block",
   fontFamily: mono,
-  fontSize: "clamp(13px, 1.4vw, 14.5px)",
-  lineHeight: 1.85,
+  fontSize: "clamp(11.5px, 1vw, 13px)",
+  lineHeight: 1.62,
   margin: 0,
   whiteSpace: "pre-wrap",
   overflowWrap: "break-word",
+};
+
+const panelStyle: CSSProperties = {
+  borderRadius: 13,
+  padding: "15px 17px 17px",
 };
 
 /**
  * Renders the "one paragraph, run through the engine" live demo: an
  * editable input paragraph, the engine's fixed output (or a line diff of
  * the two), and the fired-rule tally the CLI itself prints. Standalone —
- * mounted by the site's Demo section with no props.
+ * mounted by the hero's panel with no props.
  */
 export function ParagraphDemo() {
   const { status, progress, error, engine } = useFriction();
@@ -43,6 +50,10 @@ export function ParagraphDemo() {
   // lighter ink, substitutions on yellow — the same visual language the
   // static sample used); the toggle switches to the clean fixed text.
   const [view, setView] = useState<"changes" | "clean">("changes");
+  // The rule-by-rule tally is the CLI's own output and worth having, but
+  // it is the one part of the demo nobody needs before they have edited
+  // anything — so it folds away and the headline counts stay visible.
+  const [tallyOpen, setTallyOpen] = useState(false);
   const firstRunRef = useRef(true);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -135,17 +146,17 @@ export function ParagraphDemo() {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-      {statusLine && <div style={{ fontSize: 13, fontFamily: mono, color: "#A9A498" }}>{statusLine}</div>}
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      {statusLine && <div style={{ fontSize: 12, fontFamily: mono, lineHeight: 1.5, color: "#A9A498" }}>{statusLine}</div>}
 
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
-          gap: 24,
+          gap: 14,
         }}
       >
-        <div style={{ background: "#1F1F1F", border: "1px solid rgba(250,248,243,0.09)", borderRadius: 16, padding: "28px 30px 32px" }}>
+        <div style={{ ...panelStyle, background: "#1F1F1F", border: "1px solid rgba(250,248,243,0.09)" }}>
           <div style={{ ...panelLabelStyle, color: "#7A756B" }}>
             Input — machine draft, {inputWords} {pluralize(inputWords, "word", "words")}
           </div>
@@ -169,7 +180,7 @@ export function ParagraphDemo() {
           />
         </div>
 
-        <div style={{ background: "#FAF8F3", borderRadius: 16, padding: "28px 30px 32px" }}>
+        <div style={{ ...panelStyle, background: "#FAF8F3" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
             <div style={{ ...panelLabelStyle, color: "#8A8478", marginBottom: 0 }}>
               Output — {outputWords} {pluralize(outputWords, "word", "words")}, {patchCount} {pluralize(patchCount, "patch", "patches")} applied
@@ -180,16 +191,16 @@ export function ParagraphDemo() {
               title={view === "changes" ? "Show the clean fixed text" : "Show what changed"}
               style={{
                 fontFamily: mono,
-                fontSize: 11,
+                fontSize: 10.5,
                 letterSpacing: "0.04em",
                 textTransform: "uppercase",
                 background: view === "changes" ? "#FFD400" : "#1A1A1A",
                 color: view === "changes" ? "#1A1A1A" : "#FAF8F3",
                 border: "none",
                 borderRadius: 999,
-                padding: "6px 12px",
+                padding: "5px 11px",
                 cursor: "pointer",
-                marginBottom: 18,
+                marginBottom: 11,
                 whiteSpace: "nowrap",
               }}
             >
@@ -223,35 +234,68 @@ export function ParagraphDemo() {
         </div>
       </div>
 
-      <pre
+      <div
         style={{
-          fontFamily: mono,
-          fontSize: 12,
-          lineHeight: 1.85,
-          color: "#C9C4B8",
           background: "#1F1F1F",
           border: "1px solid rgba(250,248,243,0.09)",
-          borderRadius: 16,
-          padding: "26px 18px",
-          margin: 0,
-          whiteSpace: "pre-wrap",
+          borderRadius: 13,
+          padding: "11px 15px 12px",
         }}
       >
-        {patchCount === 0
-          ? "friction fix: no patches applied — clean"
-          : `friction fix: ${passCount} pass(es), ${patchCount} patch(es) applied\n` +
-            tallyLines.map((line) => `  ${line.rule}: ${line.count}`).join("\n")}
-        {result && `\n  suggest: ${findings.length} finding(s) remain`}
-        {findings.map((span) => (
-          <div key={`${span.frame_id}-${span.start}`} style={{ paddingLeft: 16 }}>
-            <span style={{ color: "#FFD400" }}>! </span>
-            <span style={{ color: "#FAF8F3" }}>"{byteExcerpt(outputText, span.start, span.end)}"</span>
-            {" — "}
-            {span.frame_id}
-            {span.message ? ` — ${span.message}` : ""}
-          </div>
-        ))}
-      </pre>
+        <button
+          type="button"
+          onClick={() => setTallyOpen((prev) => !prev)}
+          aria-expanded={tallyOpen}
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            gap: 12,
+            width: "100%",
+            fontFamily: mono,
+            fontSize: 11.5,
+            lineHeight: 1.5,
+            textAlign: "left",
+            color: "#C9C4B8",
+            background: "none",
+            border: "none",
+            padding: 0,
+            cursor: "pointer",
+          }}
+        >
+          <span>
+            {patchCount === 0
+              ? "friction fix: no patches applied — clean"
+              : `friction fix: ${passCount} pass(es), ${patchCount} patch(es) applied`}
+            {result && ` · ${findings.length} finding(s) remain`}
+          </span>
+          <span style={{ color: "#FFD400", whiteSpace: "nowrap" }}>{tallyOpen ? "hide rules" : "show rules"}</span>
+        </button>
+
+        {tallyOpen && (
+          <pre
+            style={{
+              fontFamily: mono,
+              fontSize: 11.5,
+              lineHeight: 1.7,
+              color: "#C9C4B8",
+              margin: "9px 0 0",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {patchCount === 0 ? "no rules fired" : tallyLines.map((line) => `  ${line.rule}: ${line.count}`).join("\n")}
+            {findings.map((span) => (
+              <div key={`${span.frame_id}-${span.start}`} style={{ paddingLeft: 16 }}>
+                <span style={{ color: "#FFD400" }}>! </span>
+                <span style={{ color: "#FAF8F3" }}>"{byteExcerpt(outputText, span.start, span.end)}"</span>
+                {" — "}
+                {span.frame_id}
+                {span.message ? ` — ${span.message}` : ""}
+              </div>
+            ))}
+          </pre>
+        )}
+      </div>
     </div>
   );
 }
