@@ -62,7 +62,7 @@ export default function Hero() {
                 <div style={{ fontSize: 13.5, lineHeight: 1.5, color: "#4A473F" }}>Never invents a word. Where no safe edit exists, it reports instead.</div>
               </div>
             </div>
-            <div data-reveal="3" style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 520 }}>
+            <div className="hero-install" data-reveal="3" style={{ flexDirection: "column", gap: 12, maxWidth: 520 }}>
               <div
                 style={{
                   display: "flex",
@@ -100,22 +100,11 @@ export default function Hero() {
             boxShadow: "0 24px 60px rgba(26,26,26,0.18)",
           }}
         >
-          <h2
-            style={{
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: 600,
-              fontSize: "clamp(17px, 1.6vw, 20px)",
-              lineHeight: 1.15,
-              letterSpacing: "-0.02em",
-              color: "#FAF8F3",
-              margin: "0 0 6px",
-              padding: "0 4px",
-            }}
-          >
+          <h2 className="hero-demo-title">
             One paragraph, run through the engine{" "}
             <span style={{ color: "#FFD400", fontWeight: 500, whiteSpace: "nowrap" }}>(try it here)</span>
           </h2>
-          <p style={{ fontSize: 12.5, lineHeight: 1.5, fontWeight: 300, color: "#A9A498", margin: "0 0 12px", padding: "0 4px" }}>
+          <p className="hero-demo-note">
             Struck text is deleted, yellow is substituted.{" "}
             <span style={{ color: "#C9C4B8" }}>The real engine, in WebAssembly, on your machine.</span>
           </p>

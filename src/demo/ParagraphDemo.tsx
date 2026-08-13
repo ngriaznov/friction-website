@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useFriction } from "./useFriction";
 import type { FrictionCheckSpan, FrictionFixResult } from "./friction";
 import { SAMPLE_INPUT, SAMPLE_OUTPUT, SAMPLE_PASS_COUNT, SAMPLE_PATCH_COUNT, SAMPLE_TALLY_LINES } from "./sample";
@@ -6,32 +6,9 @@ import { byteExcerpt, countWords, diffWords, formatMB, pluralize, tallyFromFired
 
 const DEBOUNCE_MS = 400;
 
-const mono = "'IBM Plex Mono', monospace";
-
-const panelLabelStyle: CSSProperties = {
-  fontFamily: mono,
-  fontSize: 10.5,
-  letterSpacing: "0.08em",
-  textTransform: "uppercase",
-  marginBottom: 11,
-};
-
-// Sized so the whole demo — both panels and the tally — fits the hero
-// panel without running past the first screen.
-const codeStyle: CSSProperties = {
-  display: "block",
-  fontFamily: mono,
-  fontSize: "clamp(11.5px, 1vw, 13px)",
-  lineHeight: 1.62,
-  margin: 0,
-  whiteSpace: "pre-wrap",
-  overflowWrap: "break-word",
-};
-
-const panelStyle: CSSProperties = {
-  borderRadius: 13,
-  padding: "15px 17px 17px",
-};
+// Type scale and spacing live in styles.css (.demo-*): the panel is roomy
+// on a phone, where the page scrolls anyway, and tightens from 900px up,
+// where the whole demo has to fit the hero's first screen.
 
 /**
  * Renders the "one paragraph, run through the engine" live demo: an
@@ -146,18 +123,12 @@ export function ParagraphDemo() {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      {statusLine && <div style={{ fontSize: 12, fontFamily: mono, lineHeight: 1.5, color: "#A9A498" }}>{statusLine}</div>}
+    <div className="demo-stack">
+      {statusLine && <div className="demo-status">{statusLine}</div>}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
-          gap: 14,
-        }}
-      >
-        <div style={{ ...panelStyle, background: "#1F1F1F", border: "1px solid rgba(250,248,243,0.09)" }}>
-          <div style={{ ...panelLabelStyle, color: "#7A756B" }}>
+      <div className="demo-panels">
+        <div className="demo-panel" style={{ background: "#1F1F1F", border: "1px solid rgba(250,248,243,0.09)" }}>
+          <div className="demo-label" style={{ color: "#7A756B" }}>
             Input — machine draft, {inputWords} {pluralize(inputWords, "word", "words")}
           </div>
           <textarea
@@ -166,8 +137,8 @@ export function ParagraphDemo() {
             onChange={(event) => setText(event.target.value)}
             spellCheck={false}
             rows={1}
+            className="demo-code"
             style={{
-              ...codeStyle,
               width: "100%",
               resize: "none",
               overflow: "hidden",
@@ -180,28 +151,19 @@ export function ParagraphDemo() {
           />
         </div>
 
-        <div style={{ ...panelStyle, background: "#FAF8F3" }}>
+        <div className="demo-panel" style={{ background: "#FAF8F3" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-            <div style={{ ...panelLabelStyle, color: "#8A8478", marginBottom: 0 }}>
+            <div className="demo-label" style={{ color: "#8A8478", marginBottom: 0 }}>
               Output — {outputWords} {pluralize(outputWords, "word", "words")}, {patchCount} {pluralize(patchCount, "patch", "patches")} applied
             </div>
             <button
               type="button"
               onClick={() => setView((prev) => (prev === "changes" ? "clean" : "changes"))}
               title={view === "changes" ? "Show the clean fixed text" : "Show what changed"}
+              className="demo-view-toggle"
               style={{
-                fontFamily: mono,
-                fontSize: 10.5,
-                letterSpacing: "0.04em",
-                textTransform: "uppercase",
                 background: view === "changes" ? "#FFD400" : "#1A1A1A",
                 color: view === "changes" ? "#1A1A1A" : "#FAF8F3",
-                border: "none",
-                borderRadius: 999,
-                padding: "5px 11px",
-                cursor: "pointer",
-                marginBottom: 11,
-                whiteSpace: "nowrap",
               }}
             >
               {view === "changes" ? "changes" : "clean"}
@@ -209,7 +171,7 @@ export function ParagraphDemo() {
           </div>
 
           {view === "changes" ? (
-            <code style={{ ...codeStyle, color: "#1A1A1A" }}>
+            <code className="demo-code" style={{ color: "#1A1A1A" }}>
               {redline.map((op, index) => {
                 if (op.type === "del") {
                   return (
@@ -229,39 +191,17 @@ export function ParagraphDemo() {
               })}
             </code>
           ) : (
-            <code style={{ ...codeStyle, color: "#1A1A1A" }}>{outputText}</code>
+            <code className="demo-code" style={{ color: "#1A1A1A" }}>{outputText}</code>
           )}
         </div>
       </div>
 
-      <div
-        style={{
-          background: "#1F1F1F",
-          border: "1px solid rgba(250,248,243,0.09)",
-          borderRadius: 13,
-          padding: "11px 15px 12px",
-        }}
-      >
+      <div className="demo-tally">
         <button
           type="button"
           onClick={() => setTallyOpen((prev) => !prev)}
           aria-expanded={tallyOpen}
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            gap: 12,
-            width: "100%",
-            fontFamily: mono,
-            fontSize: 11.5,
-            lineHeight: 1.5,
-            textAlign: "left",
-            color: "#C9C4B8",
-            background: "none",
-            border: "none",
-            padding: 0,
-            cursor: "pointer",
-          }}
+          className="demo-tally-toggle"
         >
           <span>
             {patchCount === 0
@@ -273,16 +213,7 @@ export function ParagraphDemo() {
         </button>
 
         {tallyOpen && (
-          <pre
-            style={{
-              fontFamily: mono,
-              fontSize: 11.5,
-              lineHeight: 1.7,
-              color: "#C9C4B8",
-              margin: "9px 0 0",
-              whiteSpace: "pre-wrap",
-            }}
-          >
+          <pre className="demo-tally-rules">
             {patchCount === 0 ? "no rules fired" : tallyLines.map((line) => `  ${line.rule}: ${line.count}`).join("\n")}
             {findings.map((span) => (
               <div key={`${span.frame_id}-${span.start}`} style={{ paddingLeft: 16 }}>

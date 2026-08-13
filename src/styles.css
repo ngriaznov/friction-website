@@ -107,6 +107,33 @@ a:hover {
   order: 2;
 }
 
+/* The install card is desktop-only: nobody runs `npm install -g` from a
+   phone, and dropping it there keeps the stacked page to the pitch, the
+   demo and the three claims. */
+.hero-install {
+  display: none;
+}
+
+.hero-demo-title {
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #FAF8F3;
+  margin: 0 0 9px;
+  padding: 0 4px;
+}
+
+.hero-demo-note {
+  font-size: 13.5px;
+  line-height: 1.55;
+  font-weight: 300;
+  color: #A9A498;
+  margin: 0 0 16px;
+  padding: 0 4px;
+}
+
 @media (min-width: 900px) {
   .hero-grid {
     /* The demo column takes the larger share: every pixel of width there
@@ -124,6 +151,148 @@ a:hover {
   }
   .hero-extras {
     margin-top: 28px;
+  }
+  .hero-install {
+    display: flex;
+  }
+  .hero-demo-title {
+    font-size: clamp(17px, 1.6vw, 20px);
+    margin-bottom: 6px;
+  }
+  .hero-demo-note {
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+}
+
+/* The paragraph demo. Phone values first: the page scrolls there anyway,
+   so the panels keep the roomier reading size. From 900px the demo shares
+   the first screen with the pitch and everything tightens to fit. */
+.demo-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.demo-panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 24px;
+}
+
+.demo-panel {
+  border-radius: 16px;
+  padding: 28px 30px 32px;
+}
+
+.demo-code {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: clamp(13px, 1.4vw, 14.5px);
+  line-height: 1.85;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.demo-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.demo-status {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #A9A498;
+}
+
+.demo-view-toggle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 12px;
+  margin-bottom: 18px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.demo-tally {
+  background: #1F1F1F;
+  border: 1px solid rgba(250, 248, 243, 0.09);
+  border-radius: 16px;
+  padding: 16px 18px 17px;
+}
+
+.demo-tally-toggle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+  color: #C9C4B8;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.demo-tally-rules {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  line-height: 1.75;
+  color: #C9C4B8;
+  margin: 10px 0 0;
+  white-space: pre-wrap;
+}
+
+@media (min-width: 900px) {
+  .demo-stack,
+  .demo-panels {
+    gap: 14px;
+  }
+  .demo-panel {
+    border-radius: 13px;
+    padding: 15px 17px 17px;
+  }
+  .demo-code {
+    font-size: clamp(11.5px, 1vw, 13px);
+    line-height: 1.62;
+  }
+  .demo-label {
+    font-size: 10.5px;
+    margin-bottom: 11px;
+  }
+  .demo-status {
+    font-size: 12px;
+  }
+  .demo-view-toggle {
+    font-size: 10.5px;
+    padding: 5px 11px;
+    margin-bottom: 11px;
+  }
+  .demo-tally {
+    border-radius: 13px;
+    padding: 11px 15px 12px;
+  }
+  .demo-tally-toggle,
+  .demo-tally-rules {
+    font-size: 11.5px;
+  }
+  .demo-tally-rules {
+    line-height: 1.7;
+    margin-top: 9px;
   }
 }
 
