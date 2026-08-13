@@ -107,13 +107,6 @@ a:hover {
   order: 2;
 }
 
-/* The install card is desktop-only: nobody runs `npm install -g` from a
-   phone, and dropping it there keeps the stacked page to the pitch, the
-   demo and the three claims. */
-.hero-install {
-  display: none;
-}
-
 .hero-demo-title {
   font-family: Poppins, sans-serif;
   font-weight: 600;
@@ -151,9 +144,6 @@ a:hover {
   }
   .hero-extras {
     margin-top: 28px;
-  }
-  .hero-install {
-    display: flex;
   }
   .hero-demo-title {
     font-size: clamp(17px, 1.6vw, 20px);

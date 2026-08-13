@@ -62,7 +62,7 @@ export default function Hero() {
                 <div style={{ fontSize: 13.5, lineHeight: 1.5, color: "#4A473F" }}>Never invents a word. Where no safe edit exists, it reports instead.</div>
               </div>
             </div>
-            <div className="hero-install" data-reveal="3" style={{ flexDirection: "column", gap: 12, maxWidth: 520 }}>
+            <div data-reveal="3" style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 520 }}>
               <div
                 style={{
                   display: "flex",
