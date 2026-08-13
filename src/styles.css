@@ -81,6 +81,49 @@ a:hover {
   }
 }
 
+/* Hero layout. Two columns from 900px up — pitch over feature cards on the
+   left, the live demo on the right. Below that the grid is one column and
+   `display: contents` dissolves the left-hand wrapper, which lets `order`
+   lift the demo above the feature cards: on a phone the thing you can
+   actually operate follows the opening paragraph rather than trailing the
+   whole pitch. Nothing in the cards is focusable, so the visual reshuffle
+   does not desync from tab order. */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.hero-left {
+  display: contents;
+}
+
+.hero-demo {
+  order: 1;
+}
+
+.hero-extras {
+  order: 2;
+}
+
+@media (min-width: 900px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(36px, 5vw, 64px);
+  }
+  .hero-left {
+    display: block;
+  }
+  .hero-demo,
+  .hero-extras {
+    order: 0;
+  }
+  .hero-extras {
+    margin-top: 28px;
+  }
+}
+
 [data-h="h1"]:hover { color: #1A1A1A !important; }
 [data-h="h2"]:hover { background: #000 !important; color: #FFD400 !important; }
 [data-h="h3"]:hover { border-color: #FFD400 !important; }
