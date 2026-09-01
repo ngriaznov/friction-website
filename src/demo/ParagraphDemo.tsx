@@ -96,6 +96,14 @@ export function ParagraphDemo() {
   }, [status, engine, text]);
 
   const inputWords = countWords(text);
+  // The engine's own held candidates (fix's --suggest rows: register
+  // tells, gate declines) plus check's residual detection spans over the
+  // output, deduped — a report-only frame rule can surface through both
+  // paths at the same span. Older staged wrappers predate `suggestions`.
+  const suggestions = result?.suggestions ?? [];
+  const heldKeys = new Set(suggestions.map((s) => `${s.rule}@${s.start}`));
+  const residualFindings = findings.filter((span) => !heldKeys.has(`${span.frame_id}@${span.start}`));
+  const remainCount = suggestions.length + residualFindings.length;
   const outputText = result ? result.output : SAMPLE_OUTPUT;
   const outputWords = countWords(outputText);
   const tally = result ? tallyFromFired(result.fired) : null;
@@ -207,7 +215,7 @@ export function ParagraphDemo() {
             {patchCount === 0
               ? "friction fix: no patches applied — clean"
               : `friction fix: ${passCount} pass(es), ${patchCount} patch(es) applied`}
-            {result && ` · ${findings.length} finding(s) remain`}
+            {result && ` · ${remainCount} finding(s) remain`}
           </span>
           <span style={{ color: "#FFD400", whiteSpace: "nowrap" }}>{tallyOpen ? "hide rules" : "show rules"}</span>
         </button>
@@ -215,7 +223,16 @@ export function ParagraphDemo() {
         {tallyOpen && (
           <pre className="demo-tally-rules">
             {patchCount === 0 ? "no rules fired" : tallyLines.map((line) => `  ${line.rule}: ${line.count}`).join("\n")}
-            {findings.map((span) => (
+            {suggestions.map((held) => (
+              <div key={`${held.rule}-${held.start}`} style={{ paddingLeft: 16 }}>
+                <span style={{ color: "#FFD400" }}>! </span>
+                <span style={{ color: "#FAF8F3" }}>"{byteExcerpt(outputText, held.start, held.end)}"</span>
+                {" — "}
+                {held.rule}
+                {held.message ? ` — ${held.message}` : ""}
+              </div>
+            ))}
+            {residualFindings.map((span) => (
               <div key={`${span.frame_id}-${span.start}`} style={{ paddingLeft: 16 }}>
                 <span style={{ color: "#FFD400" }}>! </span>
                 <span style={{ color: "#FAF8F3" }}>"{byteExcerpt(outputText, span.start, span.end)}"</span>

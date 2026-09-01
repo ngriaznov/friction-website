@@ -33,6 +33,23 @@ export interface FrictionFixResult {
   changed: boolean;
   diff: FrictionDiffOp[];
   fired: FrictionFiredRule[];
+  /**
+   * Held candidates the engine declined to rewrite — the rows `friction
+   * fix --suggest` lists, positioned against `output` (byte offsets,
+   * like `FrictionCheckSpan`'s). Present from wrapper 0.6.12 on; older
+   * staged wrappers omit the field.
+   */
+  suggestions?: FrictionSuggestion[];
+}
+
+/** One held candidate from `engine.fix(text)` (see `suggestions`). */
+export interface FrictionSuggestion {
+  rule: string;
+  start: number;
+  end: number;
+  line: number;
+  column: number;
+  message: string;
 }
 
 /**
@@ -65,7 +82,10 @@ export interface FrictionEngine {
   check(input: string): FrictionCheckReport;
   /** `friction explain --format json`, parsed. Shape not pinned here. */
   explain(input: string): unknown;
+  /** Fixed output + suggestion rows, parsed (wrapper 0.6.12+). */
+  suggest?(input: string): { output: string; suggest_count: number; suggestions: FrictionSuggestion[] };
   fixText(input: string): string;
+  suggestText?(input: string): string;
   checkText(input: string): string;
   explainText(input: string): string;
   engineVersion(): string;
