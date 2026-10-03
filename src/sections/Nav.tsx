@@ -41,6 +41,7 @@ export default function Nav() {
         <a href="#speed" style={{ color: "inherit" }} data-h="h1">Speed</a>
         <a href="#usage" style={{ color: "inherit" }} data-h="h1">Usage</a>
         <a href="#skill" style={{ color: "inherit" }} data-h="h1">Skill</a>
+        <a href="#mod" style={{ color: "inherit" }} data-h="h1">Mod</a>
         <a href="#attestation" style={{ color: "inherit" }} data-h="h1">Attestation</a>
         <a href="#guarantees" style={{ color: "inherit" }} data-h="h1">Guarantees</a>
         <a href="#limits" style={{ color: "inherit" }} data-h="h1">Limits</a>

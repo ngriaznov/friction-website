@@ -6,6 +6,7 @@ import Rewrites from "./sections/Rewrites";
 import Speed from "./sections/Speed";
 import Usage from "./sections/Usage";
 import Skill from "./sections/Skill";
+import Mod from "./sections/Mod";
 import Attestation from "./sections/Attestation";
 import Guarantees from "./sections/Guarantees";
 import Limits from "./sections/Limits";
@@ -23,6 +24,7 @@ export default function App() {
       <Speed />
       <Usage />
       <Skill />
+      <Mod />
       <Attestation />
       <Guarantees />
       <Limits />
