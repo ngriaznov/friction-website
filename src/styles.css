@@ -23,6 +23,23 @@ a:hover {
   color: #1A1A1A;
 }
 
+/* On a phone the nav wraps to four rows or more: kept sticky, it would cover
+   a quarter of the screen, with the page scrolling under its translucent,
+   blurred background. Below 720px wide, or on a short screen (a phone held
+   sideways), the header is solid and scrolls away with the page. */
+@media (max-width: 719px), (max-height: 559px) {
+  .site-header {
+    position: relative !important;
+    background: #FAF8F3 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html {
+    scroll-padding-top: 16px;
+  }
+}
+
 /* Content is visible by default. Only a browser that has run the reveal
    effect (see src/hooks/useReveal.ts) and supports IntersectionObserver
    ever hides anything, so crawlers and text-only agents always receive
