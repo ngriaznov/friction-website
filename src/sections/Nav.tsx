@@ -1,6 +1,7 @@
 export default function Nav() {
   return (
     <header
+      className="site-header"
       style={{
         position: "sticky",
         top: 0,
