@@ -27,8 +27,8 @@ export default function Footer() {
                 Project
               </div>
               <a href="https://github.com/zerosize-dev/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">GitHub</a>
-              <a href="https://github.com/ngriaznov/friction-skill" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction-skill</a>
-              <a href="https://github.com/ngriaznov/friction-skill/tree/main/plugins/friction-replies" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction-replies</a>
+              <a href="https://github.com/zerosize-dev/friction-skill" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction-skill</a>
+              <a href="https://github.com/zerosize-dev/friction-skill/tree/main/plugins/friction-replies" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction-replies</a>
               <a href="https://github.com/zerosize-dev/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">License</a>
             </div>
           </div>

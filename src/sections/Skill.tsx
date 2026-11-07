@@ -30,7 +30,7 @@ export default function Skill() {
           </h2>
           <p style={{ fontSize: 16, lineHeight: 1.65, fontWeight: 300, color: "#4A473F", margin: 0, maxWidth: "34em", textWrap: "pretty" }}>
             <a
-              href="https://github.com/ngriaznov/friction-skill"
+              href="https://github.com/zerosize-dev/friction-skill"
               style={{ color: "inherit", textDecoration: "underline", textDecorationColor: "rgba(26,26,26,0.3)", textUnderlineOffset: "3px" }}
             >
               friction-skill
@@ -41,7 +41,7 @@ export default function Skill() {
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <div style={{ background: "#1A1A1A", borderRadius: 14, padding: "22px 24px", display: "flex", flexDirection: "column", gap: 12 }}>
             <code style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "clamp(12px, 1.3vw, 13.5px)", color: "#FAF8F3", overflowWrap: "break-word" }}>
-              <span style={{ color: "#FFD400" }}>&gt;</span> /plugin marketplace add ngriaznov/friction-skill
+              <span style={{ color: "#FFD400" }}>&gt;</span> /plugin marketplace add zerosize-dev/friction-skill
             </code>
             <code style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "clamp(12px, 1.3vw, 13.5px)", color: "#FAF8F3", overflowWrap: "break-word" }}>
               <span style={{ color: "#FFD400" }}>&gt;</span> /plugin install friction-skill@friction-skill
