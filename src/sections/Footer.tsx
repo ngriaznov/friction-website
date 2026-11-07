@@ -18,18 +18,18 @@ export default function Footer() {
               <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "#7A756B", marginBottom: 2 }}>
                 Commands
               </div>
-              <a href="https://github.com/ngriaznov/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction fix</a>
-              <a href="https://github.com/ngriaznov/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction check</a>
-              <a href="https://github.com/ngriaznov/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction explain</a>
+              <a href="https://github.com/zerosize-dev/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction fix</a>
+              <a href="https://github.com/zerosize-dev/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction check</a>
+              <a href="https://github.com/zerosize-dev/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction explain</a>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
               <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "#7A756B", marginBottom: 2 }}>
                 Project
               </div>
-              <a href="https://github.com/ngriaznov/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">GitHub</a>
+              <a href="https://github.com/zerosize-dev/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">GitHub</a>
               <a href="https://github.com/ngriaznov/friction-skill" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction-skill</a>
               <a href="https://github.com/ngriaznov/friction-skill/tree/main/plugins/friction-replies" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">friction-replies</a>
-              <a href="https://github.com/ngriaznov/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">License</a>
+              <a href="https://github.com/zerosize-dev/friction" style={{ fontSize: 14, color: "#C9C4B8" }} data-h="h4">License</a>
             </div>
           </div>
         </footer>

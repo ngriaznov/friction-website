@@ -47,7 +47,7 @@ export default function Nav() {
         <a href="#guarantees" style={{ color: "inherit" }} data-h="h1">Guarantees</a>
         <a href="#limits" style={{ color: "inherit" }} data-h="h1">Limits</a>
         <a
-          href="https://github.com/ngriaznov/friction"
+          href="https://github.com/zerosize-dev/friction"
           style={{
             display: "flex",
             alignItems: "center",

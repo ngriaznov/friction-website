@@ -1,6 +1,6 @@
 # friction-website
 
-The marketing site for [friction](https://github.com/ngriaznov/friction), a deterministic CLI that strips LLM-speak out of machine-written technical documentation. Built with Vite, React and TypeScript. The interactive demo runs the real friction engine in the browser via WebAssembly.
+The marketing site for [friction](https://github.com/zerosize-dev/friction), a deterministic CLI that strips LLM-speak out of machine-written technical documentation. Built with Vite, React and TypeScript. The interactive demo runs the real friction engine in the browser via WebAssembly.
 
 ## Development
 
