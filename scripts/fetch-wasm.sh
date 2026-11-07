@@ -9,7 +9,7 @@
 # published release asset.
 set -euo pipefail
 
-VERSION="${FRICTION_VERSION:-0.6.19}"
+VERSION="${FRICTION_VERSION:-0.6.20}"
 REPO="zerosize-dev/friction"
 ASSET="friction-playground-${VERSION}.tar.gz"
 URL="https://github.com/${REPO}/releases/download/v${VERSION}/${ASSET}"
